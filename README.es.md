@@ -1,6 +1,9 @@
-# HolaMundoKMP — tu primera app con Kotlin Multiplatform
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/%F0%9F%87%AC%F0%9F%87%A7-English-1f6feb?style=for-the-badge" alt="English"></a>
+  <a href="README.es.md"><img src="https://img.shields.io/badge/%F0%9F%87%AA%F0%9F%87%B8-Espa%C3%B1ol-d73a49?style=for-the-badge" alt="Español"></a>
+</p>
 
-🇬🇧 [English](README.md) · 🇪🇸 **Español**
+# HolaMundoKMP — tu primera app con Kotlin Multiplatform
 
 Un **"¡Hola Mundo!" escrito una sola vez en Kotlin** que corre en **Android** y en **iOS**, con la
 interfaz hecha en **Compose Multiplatform** (el mismo Jetpack Compose de Android, pero también para
@@ -10,9 +13,9 @@ Este README es un **tutorial paso a paso para principiantes**: explica cada arch
 el orden en que lo escribirías tú partiendo de una carpeta vacía. **Primero se monta y se ejecuta en
 Android**, y **después se le añade iOS**.
 
-| Android 16 (emulador Pixel 9) | iOS 26.5 (simulador iPhone 17 Pro) |
-|:---:|:---:|
-| <img src="docs/capturas/android-hola-mundo.png" width="260" alt="La app corriendo en el emulador de Android"> | <img src="docs/capturas/ios-hola-mundo.png" width="260" alt="La app corriendo en el simulador de iOS"> |
+| Android 16 (emulador Pixel 9) | iOS 26.5 (simulador iPhone 17 Pro) | iOS 26.7.1 (iPhone 15 real) |
+|:---:|:---:|:---:|
+| <img src="docs/capturas/android-hola-mundo.png" width="240" alt="La app corriendo en el emulador de Android"> | <img src="docs/capturas/ios-hola-mundo.png" width="240" alt="La app corriendo en el simulador de iOS"> | <img src="docs/capturas/iphone-hola-mundo.png" width="240" alt="La app corriendo en un iPhone 15 real"> |
 
 Las dos pantallas salen de **la misma función Kotlin** (`App()`). Lo único que cambia es la segunda
 línea, que dice en qué sistema está corriendo: esa parte la escribe cada plataforma por su lado.
@@ -786,7 +789,7 @@ Apple ID. Con un **Apple ID gratis basta**.
 
 | | Android | iPhone |
 |---|---|---|
-| Modo para desarrollar | *Opciones de desarrollador* (tocar 7 veces "Número de compilación") | **Modo de desarrollador** (Ajustes → Privacidad y seguridad) |
+| Modo para desarrollar | *Opciones de desarrollador* (tocar 7 veces "Número de compilación") | **Modo de desarrollador** (Configuración → Privacidad y seguridad) |
 | Al conectar el cable | "¿Permitir depuración USB?" | **"¿Confiar en esta computadora?"** |
 | Firma | Automática (clave de debug) | Con tu **Apple ID** (*Personal Team*) |
 | Primera vez que abres la app | Abre sin más | Hay que **confiar** en tu certificado (paso 8) |
@@ -805,10 +808,17 @@ Pasos (solo la primera vez):
    por uno tuyo (p. ej. `com.tunombre.holamundo`): cada identificador solo puede pertenecer a una cuenta.
 4. **Conecta el iPhone por cable** y desbloquéalo. Toca **Confiar** en *"¿Confiar en esta
    computadora?"* y escribe tu código.
-5. **Activa el Modo de desarrollador** en el iPhone: **Ajustes → Privacidad y seguridad → Modo de
-   desarrollador** → actívalo → **Reiniciar**. Al encender, desbloquea y confirma **Activar**.
+5. **Activa el Modo de desarrollador** en el iPhone: **Configuración** (en España, *Ajustes*) →
+   **Privacidad y seguridad** → baja hasta la sección *Seguridad* → **Modo de desarrollador** →
+   actívalo → **Reiniciar**. Al encender, desbloquea y confirma **Activar**.
    > La opción **solo aparece después de conectar el iPhone a un Mac con Xcode**. Si no la ves,
-   > conéctalo, espera a que Xcode lo detecte y vuelve a mirar.
+   > conéctalo, espera a que Xcode lo detecte y vuelve a mirar. También puedes escribir *Modo de
+   > desarrollador* en el buscador de Configuración.
+
+   | *Privacidad y seguridad* → sección *Seguridad* | *Modo de desarrollador* activado |
+   |:---:|:---:|
+   | <img src="docs/capturas/iphone-privacidad.png" width="240" alt="Configuración del iPhone, Privacidad y seguridad: Modo de desarrollador Sí"> | <img src="docs/capturas/iphone-modo-desarrollador.png" width="240" alt="Pantalla Modo de desarrollador con el interruptor activado"> |
+
 6. En Xcode, arriba, elige **tu iPhone** como destino (en lugar del simulador). La primera vez
    Xcode lo prepara (*Preparing iPhone…*) y puede tardar varios minutos.
 7. **▶ Run.** No hay que tocar nada de Kotlin: la fase de Gradle detecta que es un iPhone y compila
@@ -818,12 +828,23 @@ Pasos (solo la primera vez):
    - La primera vez también muestra *"Copying shared cache symbols from iPhone…"*. Tarda unos
      minutos y no se repite.
 8. **Confía en tu certificado** (solo con cuenta gratis): la primera vez la app no abre y el iPhone
-   dice *"Desarrollador no confiable"*. Ve a **Ajustes → General → VPN y gestión de dispositivos** →
-   en *App de desarrollador* toca tu Apple ID → **Verificar app** / **Confiar**. Vuelve a abrir la app.
+   dice *"Desarrollador no confiable"*. Ve a **Configuración → General → Admón. de dispositivos y VPN**
+   (en iOS más antiguos se llama *VPN y gestión de dispositivos*) → en *App del desarrollador* toca tu
+   Apple ID → **Verificar app** / **Confiar**. Cuando la app diga **Verificada**, ya abre.
    > Para verificar, **el iPhone necesita internet** (si no, dice *"No se pudo verificar la app. Se
    > requiere una conexión a internet…"*). Con un certificado recién creado, Apple puede tardar
    > **varios minutos** en aceptarlo: si se queda pensando, espera y vuelve a tocar *Verificar app*.
    > Si sigue sin verificar, reinicia el iPhone o quita un momento la VPN o el bloqueador de anuncios.
+
+   | *Admón. de dispositivos y VPN* → tu Apple ID | La app ya **Verificada** |
+   |:---:|:---:|
+   | <img src="docs/capturas/iphone-admon-dispositivos.png" width="240" alt="Admón. de dispositivos y VPN con la App del desarrollador"> | <img src="docs/capturas/iphone-verificada.png" width="240" alt="App del desarrollador con Hola Mundo verificada"> |
+
+   *(En las capturas, el correo y el ID del certificado están sustituidos por `tu-apple-id@ejemplo.com`.)*
+
+   Y ya está, en tu iPhone:
+
+   <img src="docs/capturas/iphone-hola-mundo.png" width="240" alt="Hola Mundo corriendo en un iPhone 15 real">
 
 **Límites de la cuenta gratis:** la app **caduca a los 7 días** (vuelve a darle ▶ desde Xcode para
 renovarla) y puedes tener como mucho **3 apps tuyas** instaladas a la vez. La cuenta de pago
@@ -962,7 +983,7 @@ Verificado el **2026-10-04** en un Mac con Apple Silicon:
 
 - **Android:** *Gradle sync* y ▶ Run desde Android Studio en el emulador Pixel 9 (Android 16).
 - **iOS:** ▶ Run desde Xcode en el simulador iPhone 17 Pro (iOS 26.5) y en un **iPhone 15 real con
-  iOS 26.6**, firmado con un Apple ID gratis ([2.7](#27-en-un-iphone-de-verdad)).
+  iOS 26.7.1**, firmado con un Apple ID gratis ([2.7](#27-en-un-iphone-de-verdad)).
 
 | Pieza | Versión |
 |---|---|

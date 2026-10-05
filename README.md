@@ -1,6 +1,9 @@
-# HolaMundoKMP — your first Kotlin Multiplatform app
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/%F0%9F%87%AC%F0%9F%87%A7-English-1f6feb?style=for-the-badge" alt="English"></a>
+  <a href="README.es.md"><img src="https://img.shields.io/badge/%F0%9F%87%AA%F0%9F%87%B8-Espa%C3%B1ol-d73a49?style=for-the-badge" alt="Español"></a>
+</p>
 
-🇬🇧 **English** · 🇪🇸 [Español](README.es.md)
+# HolaMundoKMP — your first Kotlin Multiplatform app
 
 A **"Hello World!" written once in Kotlin** that runs on **Android** and **iOS**, with the UI built in
 **Compose Multiplatform** (the same Jetpack Compose you know from Android, now on iPhone too).
@@ -12,9 +15,9 @@ it on Android**, **then you add iOS**.
 > 🇪🇸 The app itself is in Spanish, and so are a few identifiers: **"¡Hola Mundo!"** = "Hello World!",
 > **`plataforma()`** = `platform()`, **"Compose Multiplatform en Android 16"** = "… on Android 16".
 
-| Android 16 (Pixel 9 emulator) | iOS 26.5 (iPhone 17 Pro simulator) |
-|:---:|:---:|
-| <img src="docs/capturas/android-hola-mundo.png" width="260" alt="The app running on the Android emulator"> | <img src="docs/capturas/ios-hola-mundo.png" width="260" alt="The app running on the iOS simulator"> |
+| Android 16 (Pixel 9 emulator) | iOS 26.5 (iPhone 17 Pro simulator) | iOS 26.7.1 (real iPhone 15) |
+|:---:|:---:|:---:|
+| <img src="docs/capturas/android-hola-mundo.png" width="240" alt="The app running on the Android emulator"> | <img src="docs/capturas/ios-hola-mundo.png" width="240" alt="The app running on the iOS simulator"> | <img src="docs/capturas/iphone-hola-mundo.png" width="240" alt="The app running on a real iPhone 15"> |
 
 Both screens come from **the same Kotlin function** (`App()`). The only thing that differs is the
 second line, which says which system it is running on: that part is written by each platform on its own.
@@ -808,10 +811,19 @@ Steps (first time only):
    to one of your own (e.g. `com.yourname.holamundo`): each identifier can only belong to one account.
 4. **Plug the iPhone in with the cable** and unlock it. Tap **Trust** on *"Trust This Computer?"* and
    enter your passcode.
-5. **Turn on Developer Mode** on the iPhone: **Settings → Privacy & Security → Developer Mode** →
-   turn it on → **Restart**. After it restarts, unlock it and confirm **Turn On**.
+5. **Turn on Developer Mode** on the iPhone: **Settings → Privacy & Security** → scroll down to the
+   *Security* section → **Developer Mode** → turn it on → **Restart**. After it restarts, unlock it
+   and confirm **Turn On**.
    > The option **only shows up after the iPhone has been connected to a Mac with Xcode**. If you
-   > don't see it, plug it in, wait for Xcode to detect it and look again.
+   > don't see it, plug it in, wait for Xcode to detect it and look again. You can also type
+   > *Developer Mode* in the Settings search box.
+
+   | *Privacy & Security* → *Security* section | *Developer Mode* turned on |
+   |:---:|:---:|
+   | <img src="docs/capturas/iphone-privacidad.png" width="240" alt="iPhone Settings, Privacy & Security: Developer Mode On (Spanish UI)"> | <img src="docs/capturas/iphone-modo-desarrollador.png" width="240" alt="Developer Mode screen with the switch on (Spanish UI)"> |
+
+   *(The screenshots show an iPhone set to Spanish: "Modo de desarrollador" = Developer Mode.)*
+
 6. In Xcode, at the top, pick **your iPhone** as the destination (instead of the simulator). The first
    time, Xcode prepares it (*Preparing iPhone…*), which can take several minutes.
 7. **▶ Run.** Nothing changes on the Kotlin side: the Gradle phase detects it's an iPhone and compiles
@@ -821,12 +833,23 @@ Steps (first time only):
    - The first time it also shows *"Copying shared cache symbols from iPhone…"*. It takes a few
      minutes and doesn't happen again.
 8. **Trust your certificate** (free accounts only): the first time, the app won't open and the iPhone
-   says *"Untrusted Developer"*. Go to **Settings → General → VPN & Device Management** → under
-   *Developer App* tap your Apple ID → **Verify App** / **Trust**. Open the app again.
+   says *"Untrusted Developer"*. Go to **Settings → General → VPN & Device Management** (the exact
+   name varies a little between iOS versions) → under *Developer App* tap your Apple ID →
+   **Verify App** / **Trust**. Once the app shows **Verified**, it opens.
    > To verify, **the iPhone needs internet** (otherwise it says *"Unable to verify app. An internet
    > connection is required…"*). With a freshly created certificate, Apple can take **several
    > minutes** to accept it: if it keeps spinning, wait and tap *Verify App* again. If it still won't
    > verify, restart the iPhone or turn off the VPN or ad blocker for a moment.
+
+   | *Device Management & VPN* → your Apple ID | The app now **Verified** ("Verificada") |
+   |:---:|:---:|
+   | <img src="docs/capturas/iphone-admon-dispositivos.png" width="240" alt="Device Management screen with the Developer App (Spanish UI)"> | <img src="docs/capturas/iphone-verificada.png" width="240" alt="Developer App with Hola Mundo verified (Spanish UI)"> |
+
+   *(In the screenshots, the email and certificate ID are replaced with `tu-apple-id@ejemplo.com`.)*
+
+   And that's it, on your iPhone:
+
+   <img src="docs/capturas/iphone-hola-mundo.png" width="240" alt="Hola Mundo running on a real iPhone 15">
 
 **Free account limits:** the app **expires after 7 days** (hit ▶ in Xcode again to renew it) and you
 can have at most **3 of your own apps** installed at a time. The paid account (USD 99/year) lasts a
@@ -964,7 +987,7 @@ Verified on **2026-10-04** on an Apple Silicon Mac:
 
 - **Android:** *Gradle sync* and ▶ Run from Android Studio on the Pixel 9 emulator (Android 16).
 - **iOS:** ▶ Run from Xcode on the iPhone 17 Pro simulator (iOS 26.5) and on a **real iPhone 15 on
-  iOS 26.6**, signed with a free Apple ID ([2.7](#27-on-a-real-iphone)).
+  iOS 26.7.1**, signed with a free Apple ID ([2.7](#27-on-a-real-iphone)).
 
 | Piece | Version |
 |---|---|
