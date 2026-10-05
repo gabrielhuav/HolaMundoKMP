@@ -47,6 +47,7 @@ second line, which says which system it is running on: that part is written by e
   - [2.6 Run it on the iOS simulator!](#26-run-it-on-the-ios-simulator)
   - [2.7 On a real iPhone](#27-on-a-real-iphone)
 - [Part 3 — What's next?](#part-3--whats-next)
+- **[Part 4 — Use this repo as the base for your app](#part-4--use-this-repo-as-the-base-for-your-app)**
 - [Troubleshooting](#troubleshooting)
 - [Versions used](#versions-used)
 
@@ -513,6 +514,9 @@ class MainActivity : ComponentActivity() {
    finishes without errors.
 4. Android Studio creates a `local.properties` file with the path to your Android SDK. It's specific
    to each machine and **is not committed to git** (it's already in `.gitignore`).
+5. On a Mac, if the project lives in `Documents`, `Desktop` or `Downloads`, Android Studio warns
+   *"Project in Protected Folder"*. It's only a warning: the project builds the same (see
+   [Troubleshooting](#troubleshooting)).
 
 To see the structure as in this tutorial, switch the left panel from the *Android* view to
 **Project**. This is the project, with the three `shared` *source sets* and `App.kt` open; at the top
@@ -795,9 +799,11 @@ can't be **newer** than what your Xcode supports; if it is, update Xcode.
 
 Steps (first time only):
 
-1. **Add your Apple ID to Xcode:** Xcode → **Settings… → Accounts** → **+** → *Apple Account*.
+1. **Add your Apple ID to Xcode:** Xcode → **Settings… → Apple Accounts** → **Add Apple Account…**.
 2. **Choose who signs:** **iosApp** project → **iosApp** target → **Signing & Capabilities** tab →
    check **Automatically manage signing** → **Team**: *"Your Name (Personal Team)"*.
+   > If it says *"Communication with Apple failed — Your team has no devices…"*, the destination at
+   > the top is still a simulator. It fixes itself in step 6, when you pick your iPhone.
 3. **A unique Bundle Identifier.** If you cloned someone else's repo, change `ovh.gabrielhuav.holamundo`
    to one of your own (e.g. `com.yourname.holamundo`): each identifier can only belong to one account.
 4. **Plug the iPhone in with the cable** and unlock it. Tap **Trust** on *"Trust This Computer?"* and
@@ -810,9 +816,17 @@ Steps (first time only):
    time, Xcode prepares it (*Preparing iPhone…*), which can take several minutes.
 7. **▶ Run.** Nothing changes on the Kotlin side: the Gradle phase detects it's an iPhone and compiles
    `iosArm64` instead of the simulator. The first time takes longer (about 2 minutes here).
+   - If Xcode says **"Developer Mode disabled"**, you skipped step 5.
+   - If it says **"Unlock iPhone to Continue"**, unlock the iPhone: Xcode carries on by itself.
+   - The first time it also shows *"Copying shared cache symbols from iPhone…"*. It takes a few
+     minutes and doesn't happen again.
 8. **Trust your certificate** (free accounts only): the first time, the app won't open and the iPhone
    says *"Untrusted Developer"*. Go to **Settings → General → VPN & Device Management** → under
-   *Developer App* tap your Apple ID → **Trust**. Open the app again.
+   *Developer App* tap your Apple ID → **Verify App** / **Trust**. Open the app again.
+   > To verify, **the iPhone needs internet** (otherwise it says *"Unable to verify app. An internet
+   > connection is required…"*). With a freshly created certificate, Apple can take **several
+   > minutes** to accept it: if it keeps spinning, wait and tap *Verify App* again. If it still won't
+   > verify, restart the iPhone or turn off the VPN or ad blocker for a moment.
 
 **Free account limits:** the app **expires after 7 days** (hit ▶ in Xcode again to renew it) and you
 can have at most **3 of your own apps** installed at a time. The paid account (USD 99/year) lasts a
@@ -857,6 +871,58 @@ Button(onClick = { taps++ }) {
 
 ---
 
+# Part 4 — Use this repo as the base for your app
+
+### What you need for it to run
+
+| To run it on… | You need |
+|---|---|
+| Android emulator | **Android Studio** (Windows, Mac or Linux) and an emulator ([1.10](#110-create-the-emulator)). |
+| Android phone | The above + on the phone, *Developer options* and **USB debugging** turned on. |
+| iOS simulator | **Apple Silicon Mac** + **Xcode** + **Android Studio installed** (Gradle uses its JDK, also when building from Xcode). |
+| iPhone | The above + an **Apple ID** in Xcode, your **Team** selected, **Developer Mode** on and **internet on the iPhone** to verify your certificate ([2.7](#27-on-a-real-iphone)). |
+
+### What to change to make it YOUR app
+
+Find everything that carries this project's name with:
+
+```bash
+git grep -n -i -E "holamundo|hola mundo|gabrielhuav"
+```
+
+| What | Where | Example |
+|---|---|---|
+| **Project name** | `settings.gradle.kts` → `rootProject.name` | `"MyApp"` |
+| **Android app ID** (unique on Google Play; can't change once published) | `androidApp/build.gradle.kts` → `applicationId` | `"com.yourname.myapp"` |
+| **Namespace** (package of the generated classes) | `androidApp/build.gradle.kts` → `namespace` and `shared/build.gradle.kts` → `namespace` | `"com.yourname.myapp"` and `"com.yourname.myapp.shared"` |
+| **Kotlin package** (folders + the `package` line in each `.kt`) | `shared/src/*/kotlin/ovh/gabrielhuav/holamundo/` and `androidApp/src/main/kotlin/ovh/gabrielhuav/holamundo/` | `com/yourname/myapp/` |
+| **Name under the icon on Android** | `androidApp/src/main/AndroidManifest.xml` → `android:label` | `"My App"` |
+| **Name under the icon on iOS** | `iosApp/Info.plist` → `CFBundleDisplayName` | `My App` |
+| **iOS Bundle Identifier** (unique per Apple account) | Xcode → **iosApp** target → **General** → *Bundle Identifier* | `com.yourname.myapp` |
+| **Who signs on iOS** | Xcode → **Signing & Capabilities** → **Team** | your *Personal Team* |
+| **Screen texts** | `shared/src/commonMain/…/App.kt` | anything you like |
+
+How to rename the **Kotlin package** without breaking anything: in Android Studio, **Project** view →
+the panel's **⋮** menu → **Appearance** → uncheck **Compact Middle Packages**. Then, on each package
+folder (`ovh`, `gabrielhuav`, `holamundo`): right-click → **Refactor → Rename…**. Android Studio moves
+the folders and updates every `package` line at once, in `androidApp` and in the three source sets.
+
+> ⚠️ **`MainActivity`'s package must match the `androidApp` `namespace`.** The manifest declares it as
+> `.MainActivity`, i.e. `<namespace>.MainActivity`. If you change one and not the other, the app
+> builds but **crashes on launch** (`ClassNotFoundException`).
+
+**Better NOT to change** (there's no need, and touching them means editing several places at once):
+the `shared` and `androidApp` module names, the `iosApp` Xcode target and the `Shared` framework name
+(used by `import Shared` in Swift and by *Other Linker Flags* in Xcode).
+
+**Icons:** on Android, right-click `androidApp` → **New → Image Asset**. On iOS, drag a 1024×1024
+image onto `iosApp/iosApp/Assets.xcassets` → **AppIcon**.
+
+**Check nothing slipped through:** run the `git grep` above again (only the READMEs should show up),
+build with `./gradlew :androidApp:assembleDebug` and hit ▶ in Xcode.
+
+---
+
 ## Troubleshooting
 
 **Gradle and Android Studio**
@@ -885,6 +951,8 @@ Button(onClick = { taps++ }) {
 | In Xcode's console: `Failed to send CA Event for app launch measurements…` | Simulator noise when the app launches. Harmless. |
 | Xcode: *"Developer Mode disabled"* / won't run on the iPhone | Turn on Developer Mode ([2.7](#27-on-a-real-iphone), step 5). |
 | The app installs on the iPhone but won't open: *"Untrusted Developer"* | Trust your certificate ([2.7](#27-on-a-real-iphone), step 8). |
+| iPhone: *"Unable to verify app. An internet connection is required…"* or *Verify App* never finishes | The iPhone needs internet to verify your certificate, and with a new one Apple takes a few minutes. Wait and retry; otherwise restart the iPhone or turn off the VPN ([2.7](#27-on-a-real-iphone), step 8). |
+| Xcode: *"Communication with Apple failed — Your team has no devices…"* | The destination is a simulator. Pick your connected iPhone at the top of Xcode and it resolves itself. |
 | Xcode: *"Failed Registering Bundle Identifier"* / *"…is not available"* | That identifier already belongs to another account. Change the *Bundle Identifier* to one of your own ([2.7](#27-on-a-real-iphone), step 3). |
 | Xcode doesn't see the iPhone, or says its iOS version isn't supported | Unlock it and accept *"Trust This Computer?"*. If its iOS is newer than your Xcode, update Xcode. |
 
@@ -895,8 +963,8 @@ Button(onClick = { taps++ }) {
 Verified on **2026-10-04** on an Apple Silicon Mac:
 
 - **Android:** *Gradle sync* and ▶ Run from Android Studio on the Pixel 9 emulator (Android 16).
-- **iOS:** ▶ Run from Xcode on the iPhone 17 Pro simulator (iOS 26.5), and a build for a real iPhone
-  (`iosArm64`). Only signing is left, which depends on your Apple ID ([2.7](#27-on-a-real-iphone)).
+- **iOS:** ▶ Run from Xcode on the iPhone 17 Pro simulator (iOS 26.5) and on a **real iPhone 15 on
+  iOS 26.6**, signed with a free Apple ID ([2.7](#27-on-a-real-iphone)).
 
 | Piece | Version |
 |---|---|
