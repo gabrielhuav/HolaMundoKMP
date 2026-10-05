@@ -1,0 +1,22 @@
+# Gradle / Kotlin
+.gradle/
+build/
+.kotlin/
+local.properties
+
+# IDE
+*.iml
+.idea/
+.DS_Store
+
+# Android
+*.apk
+*.aab
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Xcode: se versiona el proyecto, nunca los ajustes personales ni la salida de build
+xcuserdata/
+*.xcuserstate
+DerivedData/

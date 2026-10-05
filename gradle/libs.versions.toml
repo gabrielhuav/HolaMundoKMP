@@ -1,0 +1,29 @@
+[versions]
+# Misma combinación que PolitecnicoOpenWorld, que ya compila en Windows (Android) y en el Mac (iOS).
+agp = "9.3.0"
+kotlin = "2.3.21"
+composeMultiplatform = "1.11.1"
+# Material 3 multiplataforma lleva su propia numeración: 1.9.0 es la que corresponde a Compose 1.11.1.
+composeMaterial3 = "1.9.0"
+activityCompose = "1.12.4"
+android-compileSdk = "36"
+android-targetSdk = "36"
+android-minSdk = "24"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+# Compose Multiplatform. En Android el plugin los cambia por los `androidx.compose.*` de siempre.
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+# Desde AGP 9, un módulo KMP con target Android usa este plugin y NO `com.android.library`.
+android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+# Compose necesita DOS plugins: este aporta las librerías (con versión para iOS)...
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+# ...y este es el compilador de `@Composable`, que va clavado a la versión de Kotlin.
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

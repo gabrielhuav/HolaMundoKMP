@@ -1,0 +1,12 @@
+# Saltos de línea normalizados en el repo, y convertidos al sistema de cada uno al clonar.
+* text=auto
+
+# Los scripts conservan SIEMPRE su formato, se clonen donde se clonen: un `gradlew` con CRLF
+# deja de funcionar en Mac/Linux, y un `.bat` con LF da problemas en algunas versiones de Windows.
+gradlew text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# Binarios: que git no intente tocarlos.
+*.jar binary
+*.png binary
